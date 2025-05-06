@@ -60,7 +60,7 @@ let fileManager = FileManager.default
 
 // プロジェクトのルートディレクトリを取得
 let currentDirectory = fileManager.currentDirectoryPath
-let igrfFilePath = "\(currentDirectory)/../SHC_files/IGRF\(igrfGen).SHC"
+let igrfFilePath = "\(currentDirectory)/SHC_files/IGRF\(igrfGen).SHC"
 print("Loading IGRF coefficient file: \(igrfFilePath)")
 
 var igrfData: IGRFModel?
