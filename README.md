@@ -1,9 +1,9 @@
 <h1 align="center">SwiftIGRF</h1>
-
-<img with="200" alt="IGRF icon" src="https://github.com/SatoTakeshiX/SwiftIGRF/Icon/IGRF_icon.png">
 <p align="center">
-    SwiftIGRF is a Swift package for evaluating any generation of the International Geomagnetic Reference Field (IGRF) geomagnetic field model. This project was inspired by the <a href="https://www.ncei.noaa.gov/products/international-geomagnetic-reference-field"> NCEI IGRF Python package.<a/>
+    <img width="200" alt="IGRF icon" src="https://raw.githubusercontent.com/SatoTakeshiX/SwiftIGRF/main/Icon/IGRF_icon.png">
 </p>
+
+SwiftIGRF is a Swift package for evaluating any generation of the International Geomagnetic Reference Field (IGRF) geomagnetic field model. This project was inspired by the [NCEI IGRF Python package](https://www.ncei.noaa.gov/products/international-geomagnetic-reference-field).
 
 ## Features
 
@@ -51,6 +51,10 @@ To use SwiftIGRF as a command-line tool:
 #### Example
 
 Here's an example of checking geomagnetic data for Shibuya Station in Tokyo, Japan (latitude 35° 39.48', longitude 139° 42.096') for the year 2025, with output to a file:
+
+
+<details>
+<summary>Input example</summary>
 
 ```bash
 ******************************************************
@@ -106,8 +110,15 @@ Enter decimal date in years 1900-2030:
 
 Written to file: output.txt
 ```
+</details>
+
+
+
 
 When you run the command with the options shown above, it will generate output similar to the following:
+
+<details>
+<summary>Sample for output file</summary>
 
 ```txt
 Geomagnetic field values at: 35.6580° / 139.7016°, at altitude 0.0 for 2025.0 using IGRF-14
@@ -126,6 +137,9 @@ North SV (X)     :  3.4 nT/yr
 East SV (Y)      :  -21.9 nT/yr
 Vertical SV (Z)  :  33.9 nT/yr
 ```
+</details>
+
+
 
 
 ### Application usage 
