@@ -28,7 +28,10 @@ let package = Package(
         .target(
             name: "IGRFCore",
             dependencies: [],
-            path: "Sources/Core"
+            path: "Sources/Core",
+            resources: [
+                .process("Resources/SHC_files")
+            ]
         ),
         .executableTarget(
             name: "IGRFCLI",

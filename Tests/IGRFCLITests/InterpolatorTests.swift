@@ -1,3 +1,4 @@
+import IGRFCore
 import XCTest
 
 @testable import IGRFCLI

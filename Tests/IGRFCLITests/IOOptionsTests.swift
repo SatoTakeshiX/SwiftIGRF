@@ -1,3 +1,4 @@
+import IGRFCore
 import XCTest
 
 @testable import IGRFCLI
@@ -91,7 +92,7 @@ final class IOOptionsTests: XCTestCase {
     func testMakeContents() {
         // SinglePointTimeのmakeContentメソッドのテスト
         let singlePointTime = SinglePointTime()
-        
+
         // テスト用の入力データを作成
         let input = GeomagneticInput(
             date: 2025.25,
@@ -103,7 +104,7 @@ final class IOOptionsTests: XCTestCase {
             sd: 0.003178006028319621,
             cd: 0.9999949501260912
         )
-        
+
         // テスト用の結果データを作成
         let result = MagneticFieldSynthesizerResult(
             geoComponents: GeomagneticComponents(
@@ -134,13 +135,12 @@ final class IOOptionsTests: XCTestCase {
                 z: 35587.582590321144
             )
         )
-        
+
         // makeContentメソッドを呼び出し
         let content = singlePointTime.makeContent(input: input, result: result, igrfGen: 14)
-        
+
         // 期待される出力
         let expectedContent = """
-
             Geomagnetic field values at: 35.6580° / 139.7016°, at altitude 0.0 for 2025.25 using IGRF-14
             Declination (D):  -7.865°
             Inclination (I):  49.490°
@@ -157,7 +157,7 @@ final class IOOptionsTests: XCTestCase {
             East SV (Y)      :  -21.9 nT/yr
             Vertical SV (Z)  :  33.9 nT/yr
             """
-        
+
         // 結果を検証
         XCTAssertEqual(content, expectedContent, "makeContentの出力が期待値と一致しません")
     }

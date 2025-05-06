@@ -3,11 +3,11 @@ import Foundation
 /// 補間器
 /// 線形補間を行う
 /// x, yの各要素数 は同じ長さである必要がある
-struct Interpolator {
+public struct Interpolator {
     private let x: [Double]
     private let y: [[Double]]
 
-    init(x: [Double], y: [[Double]]) {
+    public init(x: [Double], y: [[Double]]) {
         guard !y.isEmpty && y.allSatisfy({ $0.count == x.count }) else {
             fatalError("x and y arrays must have compatible dimensions")
         }
@@ -19,7 +19,7 @@ struct Interpolator {
     /// - Parameter xNew: 補間したいx座標
     /// - Returns: 補間されたy値。xに値がない場合はnilを返す
     /// note: xNewがxの範囲外の場合は線形外挿を行う
-    func interpolate(_ xNew: Double) -> [Double] {
+    public func interpolate(_ xNew: Double) -> [Double] {
         // 各行（各係数）に対して補間を実行
         return y.map { coefficients in
             let singleInterpolator = SingleInterpolator(
@@ -33,7 +33,7 @@ struct Interpolator {
     /// - Parameter xNew: 補間したいx座標
     /// - Returns: 補間されたy値。xに値がない場合はnilを返す
     /// note: xNewがxの範囲外の場合は線形外挿を行う
-    func interpolate(_ xNew: [Double]) -> [[Double]] {
+    public func interpolate(_ xNew: [Double]) -> [[Double]] {
         return xNew.map { interpolate($0) }
     }
 }

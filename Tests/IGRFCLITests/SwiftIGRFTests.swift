@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import IGRFCLI
+@testable import IGRFCore
 
 final class SwiftIGRFTests: XCTestCase {
     func testExample() throws {
