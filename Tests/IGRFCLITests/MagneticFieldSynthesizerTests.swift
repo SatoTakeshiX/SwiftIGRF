@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import SwiftIGRF
+@testable import IGRFCLI
 
 final class MagneticFieldSynthesizerTests: XCTestCase {
     func testSynthesizeAtTokyo() throws {
@@ -26,7 +26,7 @@ final class MagneticFieldSynthesizerTests: XCTestCase {
             lat: 35.658,
             colat: 54.52408663919481,
             lon: 139.7016,
-            coordinateSystem: SwiftIGRF.CoordinateSystemType.geodetic,
+            coordinateSystem: CoordinateSystemType.geodetic,
             sd: 0.003178006028319621,
             cd: 0.9999949501260912
         )
@@ -38,7 +38,7 @@ final class MagneticFieldSynthesizerTests: XCTestCase {
                 2000.0, 2005.0, 2010.0, 2015.0, 2020.0, 2025.0, 2030.0,
             ],
             coeffs: mockCoeffs,
-            parameters: SwiftIGRF.Parameters(
+            parameters: Parameters(
                 shc: "IGRF14.SHC", nmin: 1, nmax: 13, N: 27, order: 2, step: 1, startYear: 1900,
                 endYear: 2030)
         )

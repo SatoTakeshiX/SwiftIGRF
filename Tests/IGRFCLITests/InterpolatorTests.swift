@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import SwiftIGRF
+@testable import IGRFCLI
 
 final class InterpolatorTests: XCTestCase {
     func testLinearInterpolation() {

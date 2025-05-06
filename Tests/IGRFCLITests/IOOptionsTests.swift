@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import SwiftIGRF
+@testable import IGRFCLI
 
 final class IOOptionsTests: XCTestCase {
     // makeGridArraysをテスト
