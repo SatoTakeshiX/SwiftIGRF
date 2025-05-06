@@ -5,20 +5,39 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftIGRF",
+    platforms: [
+        .iOS(.v17),
+        .macOS(.v14),
+        .tvOS(.v17),
+        .watchOS(.v8),
+    ],
     products: [
-        .executable(name: "igrf", targets: ["IGRFCLI"])
+        .library(
+            name: "IGRFCore",
+            targets: ["IGRFCore"]
+        ),
+        .executable(
+            name: "igrf",
+            targets: ["IGRFCLI"]
+        ),
     ],
     dependencies: [],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .target(
+            name: "IGRFCore",
+            dependencies: [],
+            path: "Sources/Core"
+        ),
         .executableTarget(
             name: "IGRFCLI",
-            dependencies: [],
-            path: "Sources"),
+            dependencies: ["IGRFCore"],
+            path: "Sources/CLI"
+        ),
         .testTarget(
             name: "IGRFCLITests",
-            dependencies: ["IGRFCLI"],
+            dependencies: ["IGRFCLI", "IGRFCore"],
             path: "Tests/IGRFCLITests",
             resources: [
                 .process("TestData")

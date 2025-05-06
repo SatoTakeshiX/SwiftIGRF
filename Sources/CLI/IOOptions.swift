@@ -1,4 +1,5 @@
 import Foundation
+import IGRFCore
 
 protocol UserInputProtocol {
     associatedtype InputType: InputResultProtocol

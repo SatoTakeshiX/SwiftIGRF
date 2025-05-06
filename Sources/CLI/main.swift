@@ -1,4 +1,5 @@
 import Foundation
+import IGRFCore
 
 // IGRF合成プログラムの説明文を表示する関数
 func displayIGRFIntroduction() {
