@@ -1,0 +1,2 @@
+# SwiftIGRF
+IGRF for Swift
