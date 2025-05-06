@@ -66,19 +66,9 @@ print("Loading IGRF coefficient file: \(igrfFilePath)")
 
 var igrfData: IGRFModel?
 
-do {
-    // Try to access the IGRF file using FileManager
-    if fileManager.fileExists(atPath: igrfFilePath) {
-        igrfData = IGRFUtils.loadSHCFile(filepath: igrfFilePath)
-        print("Successfully loaded IGRF-\(igrfGen) coefficients")
-    } else {
-        throw NSError(
-            domain: "FileError", code: 404,
-            userInfo: [NSLocalizedDescriptionKey: "File not found at path: \(igrfFilePath)"])
-    }
-} catch {
-    print("Error reading IGRF coefficient file: \(error.localizedDescription)")
-}
+let shcURL = Bundle.loadSHCFile(igrfGen: igrfGen)
+igrfData = IGRFUtils.loadSHCFile(filepath: shcURL.path)
+print("Successfully loaded IGRF-\(igrfGen) coefficients")
 
 guard let igrfData = igrfData else {
     print("Error: Failed to load IGRF coefficient file")

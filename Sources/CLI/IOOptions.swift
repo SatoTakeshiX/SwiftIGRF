@@ -258,6 +258,7 @@ struct SinglePointTime: UserInputProtocol {
     private func readDate() -> Double {
         while true {
             print("Enter decimal date in years 1900-2030:")
+            print("->", terminator: "")
             if let input = readLine(),
                 let date = Double(input.trimmingCharacters(in: .whitespacesAndNewlines)),
                 dateVaridation(with: date)
