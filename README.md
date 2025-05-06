@@ -31,6 +31,16 @@ Check [NCEI IGRF](https://www.ncei.noaa.gov/products/international-geomagnetic-r
 - IGRF-13 is valid from January 1, 1900 to December 31, 2024
 - IGRF-14 is valid from January 1, 1900 to December 31, 2029
 
+## Platform Support
+
+SwiftIGRF supports the following Apple platforms:
+
+- iOS 17.0+
+- macOS 14.0+
+- tvOS 17.0+
+- watchOS 8.0+
+
+
 ## How to use
 
 ### CLI Usage
