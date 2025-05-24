@@ -15,7 +15,7 @@ let package = Package(
         .library(name: "IGRFApp", targets: ["IGRFApp"])
     ],
     dependencies: [
-        .package(path: "../../")  // SwiftIGRFパッケージへの相対パス
+        .package(path: "../../")
     ],
     targets: [
         .target(
