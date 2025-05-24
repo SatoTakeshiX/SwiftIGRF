@@ -9,7 +9,7 @@ import SwiftUI
 import IGRFCore
 import IGRFClient
 
-public struct ContentView: View {
+public struct IGRFScreen: View {
     public var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -24,5 +24,5 @@ public struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    IGRFScreen()
 }

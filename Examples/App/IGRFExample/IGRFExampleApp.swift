@@ -12,7 +12,7 @@ import IGRFApp
 struct IGRFExampleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            IGRFScreen()
         }
     }
 }
