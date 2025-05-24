@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import IGRFApp
 
 @main
 struct IGRFExampleApp: App {

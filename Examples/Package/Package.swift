@@ -21,8 +21,10 @@ let package = Package(
         .target(
             name: "IGRFApp",
             dependencies: [
-                .product(name: "IGRFClient", package: "SwiftIGRF")
-            ]
+                .product(name: "IGRFClient", package: "SwiftIGRF"),
+                .product(name: "IGRFCore", package: "SwiftIGRF"),
+            ],
+            path: "Sources"
         )
     ]
 )
