@@ -75,14 +75,13 @@ public struct IGRFBuilderWithLocation {
     }
 
     public func set(date: Date) -> IGRFBuilderWithDate {
-        var builder = IGRFBuilderWithDate(
+        return IGRFBuilderWithDate(
             igrfGen: igrfGen,
             coordinateSystem: coordinateSystem,
             location: location,
             altitude: altitude,
             date: date
         )
-        return builder
     }
 }
 
