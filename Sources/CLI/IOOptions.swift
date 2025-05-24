@@ -6,11 +6,6 @@ protocol UserInputProtocol {
     func input() -> InputType
 }
 
-public enum DegreeFormat: Int {
-    case degreesAndMinutes = 1
-    case decimalDegrees = 2
-}
-
 struct SinglePointTime: UserInputProtocol {
     typealias InputType = GeomagneticInput
 

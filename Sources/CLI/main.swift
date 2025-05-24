@@ -29,22 +29,22 @@ func displayIGRFIntroduction() {
 displayIGRFIntroduction()
 
 print("Enter generation number: ")
-var igrfGen: Int = 14
+var igrfGenNumber: Int = 14
 
 if let input = readLine() {
     if input.isEmpty {
         print("No input. Using IGRF-14 ")
-        igrfGen = 14
+        igrfGenNumber = 14
     } else if let inputNumber = Int(input) {
         if inputNumber >= 1 && inputNumber <= 14 {
-            igrfGen = inputNumber
+            igrfGenNumber = inputNumber
         } else {
             var validInput = false
             while !validInput {
                 print("Enter generation number: ")
                 if let newInput = readLine(), let newNumber = Int(newInput) {
                     if newNumber >= 1 && newNumber <= 14 {
-                        igrfGen = newNumber
+                        igrfGenNumber = newNumber
                         validInput = true
                     }
                 }
@@ -52,7 +52,7 @@ if let input = readLine() {
         }
     } else {
         print("\(input) is an invalid input. Using IGRF-14 as default.")
-        igrfGen = 14
+        igrfGenNumber = 14
     }
 }
 
@@ -61,14 +61,19 @@ let fileManager = FileManager.default
 
 // プロジェクトのルートディレクトリを取得
 let currentDirectory = fileManager.currentDirectoryPath
-let igrfFilePath = "\(currentDirectory)/SHC_files/IGRF\(igrfGen).SHC"
+let igrfFilePath = "\(currentDirectory)/SHC_files/IGRF\(igrfGenNumber).SHC"
 print("Loading IGRF coefficient file: \(igrfFilePath)")
 
 var igrfData: IGRFModel?
 
+guard let igrfGen = IGRFGen(rawValue: igrfGenNumber) else {
+    print("Error: Invalid IGRF generation number")
+    exit(1)
+}
+
 let shcURL = Bundle.loadSHCFile(igrfGen: igrfGen)
 igrfData = IGRFUtils.loadSHCFile(filepath: shcURL.path)
-print("Successfully loaded IGRF-\(igrfGen) coefficients")
+print("Successfully loaded IGRF-\(igrfGen.rawValue) coefficients")
 
 guard let igrfData = igrfData else {
     print("Error: Failed to load IGRF coefficient file")
@@ -113,7 +118,8 @@ if iopt == 1 {
 
     let synthesizer = MagneticFieldSynthesizer()
     let result = synthesizer.synthesize(input: input, igrfData: igrfData)
-    singlePointTime.output(fileName: outputFilename, input: input, result: result, igrfGen: igrfGen)
+    singlePointTime.output(
+        fileName: outputFilename, input: input, result: result, igrfGen: igrfGenNumber)
 
 } else if iopt == 2 {
     _ = IOOptions.option2()

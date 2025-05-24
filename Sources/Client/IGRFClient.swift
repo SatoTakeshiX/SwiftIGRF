@@ -1,59 +1,33 @@
 import Foundation
 import IGRFCore
 
-public enum DegreeFormat: Int {
-    case degreesAndMinutes = 1
-    case decimalDegrees = 2
-}
-
-/// Represents a location with a specified degree format
-public struct IGRFLocation {
-    public let latitude: Double
-    public let longitude: Double
-    public let format: DegreeFormat
-
-    public init(
-        latitude: Double,
-        longitude: Double,
-        format: DegreeFormat
-    ) {
-        self.latitude = latitude
-        self.longitude = longitude
-        self.format = format
-    }
-}
-
-public struct IGRFDataManager {
-    public static func create(igrfGen: Int) throws -> IGRFBuilder {
-        guard (1...14).contains(igrfGen) else {
-            throw IGRFError.invalidIGRFGeneration
-        }
+public struct IGRFClient {
+    public static func create(igrfGen: IGRFGen) throws -> IGRFBuilder {
         return IGRFBuilder(igrfGen: igrfGen)
     }
 }
 
 public struct IGRFBuilder {
-    private let igrfGen: Int
+    private let igrfGen: IGRFGen
 
-    init(igrfGen: Int) {
+    init(igrfGen: IGRFGen) {
         self.igrfGen = igrfGen
     }
 
     public func set(system: CoordinateSystemType) -> IGRFBuilderWithCoordinate {
-        var builder = IGRFBuilderWithCoordinate(
+        return IGRFBuilderWithCoordinate(
             igrfGen: igrfGen,
             system: system
         )
-        return builder
     }
 }
 
 public struct IGRFBuilderWithCoordinate {
-    private let igrfGen: Int
+    private let igrfGen: IGRFGen
     private let coordinateSystem: CoordinateSystemType
 
     init(
-        igrfGen: Int,
+        igrfGen: IGRFGen,
         system: CoordinateSystemType
     ) {
         self.igrfGen = igrfGen
@@ -83,13 +57,13 @@ public struct IGRFBuilderWithCoordinate {
 }
 
 public struct IGRFBuilderWithLocation {
-    private let igrfGen: Int
+    private let igrfGen: IGRFGen
     private let coordinateSystem: CoordinateSystemType
     private let location: IGRFLocation
     private let altitude: Double
 
     init(
-        igrfGen: Int,
+        igrfGen: IGRFGen,
         coordinateSystem: CoordinateSystemType,
         location: IGRFLocation,
         altitude: Double
@@ -113,14 +87,14 @@ public struct IGRFBuilderWithLocation {
 }
 
 public struct IGRFBuilderWithDate {
-    private let igrfGen: Int
+    private let igrfGen: IGRFGen
     private let coordinateSystem: CoordinateSystemType
     private let location: IGRFLocation
     private let altitude: Double
     private let date: Date
 
     init(
-        igrfGen: Int,
+        igrfGen: IGRFGen,
         coordinateSystem: CoordinateSystemType,
         location: IGRFLocation,
         altitude: Double,
@@ -154,9 +128,4 @@ public struct IGRFBuilderWithDate {
         let result = synthesizer.synthesize(input: input, igrfData: igrfData)
         return result
     }
-}
-
-public enum IGRFError: Error {
-    case invalidIGRFGeneration
-    case failedToLoadSHCFile
 }
