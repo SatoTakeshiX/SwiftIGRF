@@ -8,7 +8,7 @@ public struct IGRFClient {
 }
 
 public struct IGRFBuilder {
-    private let igrfGen: IGRFGen
+    let igrfGen: IGRFGen
 
     init(igrfGen: IGRFGen) {
         self.igrfGen = igrfGen
@@ -22,9 +22,24 @@ public struct IGRFBuilder {
     }
 }
 
+/// A struct that represents a location in decimal degrees format
+/// This struct is used to store latitude and longitude values that have already been converted to decimal degrees
+/// The colatitude (90 - latitude) is automatically calculated for convenience
+public struct DegreesLocation {
+    public let latitude: Double
+    public let longitude: Double
+    public let colatitude: Double
+
+    public init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.colatitude = 90 - latitude
+    }
+}
+
 public struct IGRFBuilderWithCoordinate {
-    private let igrfGen: IGRFGen
-    private let coordinateSystem: CoordinateSystemType
+    let igrfGen: IGRFGen
+    let coordinateSystem: CoordinateSystemType
 
     init(
         igrfGen: IGRFGen,
@@ -42,35 +57,70 @@ public struct IGRFBuilderWithCoordinate {
     /// - Returns: IGRFBuilderWithLocation instance with the specified location parameters
 
     public func set(
-        location: IGRFLocation,
+        inputLocation: IGRFLocation,
         altitude: Double
     )
         -> IGRFBuilderWithLocation
     {
-        return IGRFBuilderWithLocation(
-            igrfGen: igrfGen,
-            coordinateSystem: coordinateSystem,
-            location: location,
-            altitude: altitude
-        )
+        switch inputLocation.format {
+        case .degreesAndMinutes:
+            let latd = floor(inputLocation.latitude)
+            let latm = inputLocation.latitude - latd
+            let lond = floor(inputLocation.longitude)
+            let lonm = inputLocation.longitude - lond
+
+            let (lat, lon) = IGRFUtils.checkLatLonBounds(
+                latd: latd,
+                latm: latm,
+                lond: lond,
+                lonm: lonm
+            )
+            let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
+            return IGRFBuilderWithLocation(
+                igrfGen: igrfGen,
+                coordinateSystem: coordinateSystem,
+                inputLocation: inputLocation,
+                degreesLocation: degreesLocation,
+                altitude: altitude
+            )
+
+        case .decimalDegrees:
+            let (lat, lon) = IGRFUtils.checkLatLonBounds(
+                latd: inputLocation.latitude,
+                latm: 0,
+                lond: inputLocation.longitude,
+                lonm: 0
+            )
+            let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
+            return IGRFBuilderWithLocation(
+                igrfGen: igrfGen,
+                coordinateSystem: coordinateSystem,
+                inputLocation: inputLocation,
+                degreesLocation: degreesLocation,
+                altitude: altitude
+            )
+        }
     }
 }
 
 public struct IGRFBuilderWithLocation {
-    private let igrfGen: IGRFGen
-    private let coordinateSystem: CoordinateSystemType
-    private let location: IGRFLocation
-    private let altitude: Double
+    let igrfGen: IGRFGen
+    let coordinateSystem: CoordinateSystemType
+    let inputLocation: IGRFLocation
+    let degreesLocation: DegreesLocation
+    let altitude: Double
 
     init(
         igrfGen: IGRFGen,
         coordinateSystem: CoordinateSystemType,
-        location: IGRFLocation,
+        inputLocation: IGRFLocation,
+        degreesLocation: DegreesLocation,
         altitude: Double
     ) {
         self.igrfGen = igrfGen
         self.coordinateSystem = coordinateSystem
-        self.location = location
+        self.inputLocation = inputLocation
+        self.degreesLocation = degreesLocation
         self.altitude = altitude
     }
 
@@ -78,7 +128,7 @@ public struct IGRFBuilderWithLocation {
         return IGRFBuilderWithDate(
             igrfGen: igrfGen,
             coordinateSystem: coordinateSystem,
-            location: location,
+            location: inputLocation,
             altitude: altitude,
             date: date
         )
@@ -86,11 +136,11 @@ public struct IGRFBuilderWithLocation {
 }
 
 public struct IGRFBuilderWithDate {
-    private let igrfGen: IGRFGen
-    private let coordinateSystem: CoordinateSystemType
-    private let location: IGRFLocation
-    private let altitude: Double
-    private let date: Date
+    let igrfGen: IGRFGen
+    let coordinateSystem: CoordinateSystemType
+    let location: IGRFLocation
+    let altitude: Double
+    let date: Date
 
     init(
         igrfGen: IGRFGen,
