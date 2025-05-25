@@ -50,7 +50,7 @@ let package = Package(
         .testTarget(
             name: "IGRFCoreTests",
             dependencies: ["IGRFCore"],
-            path: "Tests/IGRFCoreTests",
+            path: "Tests/CoreTests",
             resources: [
                 .process("TestData")
             ]
@@ -58,12 +58,12 @@ let package = Package(
         .testTarget(
             name: "IGRFClientTests",
             dependencies: ["IGRFClient", "IGRFCore"],
-            path: "Tests/IGRFClientTests"
+            path: "Tests/ClientTests"
         ),
         .testTarget(
             name: "IGRFCLITests",
             dependencies: ["IGRFCLI", "IGRFCore"],
-            path: "Tests/IGRFCLITests"
+            path: "Tests/CLITests"
 
         ),
     ]
