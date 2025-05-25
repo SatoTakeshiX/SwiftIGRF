@@ -22,66 +22,6 @@ public struct IGRFBuilder {
     }
 }
 
-public struct IGRFBuilderWithLocation {
-    let igrfGen: IGRFGen
-    let coordinateSystem: CoordinateSystemType
-    let inputLocation: IGRFLocation
-    let degreesLocation: DegreesLocation
-
-    public init(
-        igrfGen: IGRFGen,
-        coordinateSystem: CoordinateSystemType,
-        inputLocation: IGRFLocation,
-        degreesLocation: DegreesLocation
-    ) {
-        self.igrfGen = igrfGen
-        self.coordinateSystem = coordinateSystem
-        self.inputLocation = inputLocation
-        self.degreesLocation = degreesLocation
-    }
-
-    public func set(alt: Double) throws -> IGRFBuilderWithGeocentricComponents {
-        switch coordinateSystem {
-        case .geodetic:
-            let (radius, geocentricColat, newSd, newCd) = IGRFUtils.ggToGeo(
-                h: alt,
-                gdcolat: degreesLocation.colatitude
-            )
-            let components = GeocentricCoordinateComponents(
-                radius: radius,
-                geocentricColat: geocentricColat,
-                sineOfDeclination: newSd,
-                cosineOfDeclination: newCd
-            )
-            return IGRFBuilderWithGeocentricComponents(
-                igrfGen: igrfGen,
-                coordinateSystem: coordinateSystem,
-                inputLocation: inputLocation,
-                degreesLocation: degreesLocation,
-                components: components
-            )
-        case .geocentric:
-            guard alt >= 3485 else {
-                throw IGRFError.invalidAltitude(
-                    message: "Invalid altitude. Alt must be greater then CMB radius (3485 km)"
-                )
-            }
-            return IGRFBuilderWithGeocentricComponents(
-                igrfGen: igrfGen,
-                coordinateSystem: coordinateSystem,
-                inputLocation: inputLocation,
-                degreesLocation: degreesLocation,
-                components: GeocentricCoordinateComponents(
-                    radius: alt,
-                    geocentricColat: degreesLocation.colatitude,
-                    sineOfDeclination: 0,
-                    cosineOfDeclination: 0
-                )
-            )
-        }
-    }
-}
-
 public struct IGRFBuilderWithGeocentricComponents {
     let igrfGen: IGRFGen
     let coordinateSystem: CoordinateSystemType
@@ -101,6 +41,23 @@ public struct IGRFBuilderWithGeocentricComponents {
         self.inputLocation = inputLocation
         self.degreesLocation = degreesLocation
         self.components = components
+    }
+
+    public func set(date: Date) throws -> IGRFBuilderWithDate {
+        let dateDouble = date.decimalYear()
+
+        guard (1900...2035).contains(dateDouble) else {
+            throw IGRFError.invalidDate(
+                message: "Invalid date. Please enter a date between 1900 and 2035.")
+        }
+        return IGRFBuilderWithDate(
+            igrfGen: igrfGen,
+            coordinateSystem: coordinateSystem,
+            inputLocation: inputLocation,
+            degreesLocation: degreesLocation,
+            components: components,
+            date: dateDouble
+        )
     }
 }
 
@@ -128,25 +85,59 @@ public struct IGRFBuilderWithDate {
         self.date = date
     }
 
-    public func synthesize() throws -> MagneticFieldSynthesizerResult {
+    public func synthesize() throws -> IGRFDisplayResult {
         let shcURL = Bundle.loadSHCFile(igrfGen: igrfGen)
         guard let igrfData = IGRFUtils.loadSHCFile(filepath: shcURL.path) else {
             throw IGRFError.failedToLoadSHCFile
         }
 
         let input = GeomagneticInput(
-            date: date.timeIntervalSince1970,
-            alt: altitude,
-            lat: location.latitude,
-            colat: 90 - location.latitude,
-            lon: location.longitude,
+            date: date,
+            alt: components.radius,
+            lat: degreesLocation.latitude,
+            colat: components.geocentricColat,
+            lon: degreesLocation.longitude,
             coordinateSystem: coordinateSystem,
-            sd: 0,
-            cd: 0
+            sd: components.sineOfDeclination,
+            cd: components.cosineOfDeclination
         )
 
         let synthesizer = MagneticFieldSynthesizer()
         let result = synthesizer.synthesize(input: input, igrfData: igrfData)
-        return result
+        let displayResult = IGRFDisplayResult(
+            input: input,
+            result: result,
+            igrfGeneration: igrfGen.rawValue
+        )
+        return displayResult
+    }
+}
+
+/// A type that summarizes IGRF calculation results for UI display
+public struct IGRFDisplayResult {
+    /// Input parameters
+    public let input: GeomagneticInput
+    /// Geomagnetic calculation results
+    public let result: MagneticFieldSynthesizerResult
+    /// Generation of IGRF model used
+    public let igrfGeneration: Int
+
+    /// input data
+    public let alt: Double
+    public let lat: Double
+
+    public init(
+        input: GeomagneticInput,
+        result: MagneticFieldSynthesizerResult,
+        igrfGeneration: Int
+    ) {
+        self.input = input
+        self.result = result
+        self.igrfGeneration = igrfGeneration
+
+        let (convertedAlt, convertedLat) = IGRFUtils.geoToGg(
+            radius: input.alt, theta: input.colat)
+        self.alt = convertedAlt
+        self.lat = convertedLat
     }
 }

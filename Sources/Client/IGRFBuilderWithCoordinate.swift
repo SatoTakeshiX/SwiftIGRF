@@ -5,7 +5,7 @@ public struct IGRFBuilderWithCoordinate {
     let igrfGen: IGRFGen
     let coordinateSystem: CoordinateSystemType
 
-    init(
+    public init(
         igrfGen: IGRFGen,
         system: CoordinateSystemType
     ) {
