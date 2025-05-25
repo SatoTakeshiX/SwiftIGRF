@@ -15,7 +15,7 @@ final class IGRFBuilderWithGeocentricComponentsTests: XCTestCase {
 
         let validDate = Date(timeIntervalSince1970: 1_577_836_800)  // January 1, 2020
         let result = try builder.set(date: validDate)
-        XCTAssertEqual(result.date, 2020.0, accuracy: 0.01)
+        XCTAssertEqual(result.decimalYear, 2020.0, accuracy: 0.01)
     }
 
     func test_setDate_throwsError_whenDateIsOutOfRange() throws {
@@ -47,7 +47,7 @@ final class IGRFBuilderWithGeocentricComponentsTests: XCTestCase {
 
         let validDecimalYear = 2020.5
         let result = try builder.set(decimalYear: validDecimalYear)
-        XCTAssertEqual(result.date, validDecimalYear, accuracy: 0.01)
+        XCTAssertEqual(result.decimalYear, validDecimalYear, accuracy: 0.01)
     }
 
     func test_setDecimalYear_throwsError_whenDateIsOutOfRange() throws {

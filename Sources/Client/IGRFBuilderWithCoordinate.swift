@@ -28,11 +28,7 @@ public struct IGRFBuilderWithCoordinate {
         switch inputLocation.format {
         case .degreesAndMinutes:
             let (latd, latm) = splitUsingModf(inputLocation.latitude)
-            print("inputLocation.latitude: \(inputLocation.latitude)")
-            print("latd: \(latd), latm: \(latm)")
             let (lond, lonm) = splitUsingModf(inputLocation.longitude)
-
-            print("latd: \(latd), latm: \(latm), lond: \(lond), lonm: \(lonm)")
 
             let (lat, lon) = IGRFUtils.checkLatLonBounds(
                 latd: latd,
@@ -40,7 +36,6 @@ public struct IGRFBuilderWithCoordinate {
                 lond: lond,
                 lonm: lonm
             )
-            print("lat: \(lat), lon: \(lon)")
             let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
             return IGRFBuilderWithLocation(
                 igrfGen: igrfGen,

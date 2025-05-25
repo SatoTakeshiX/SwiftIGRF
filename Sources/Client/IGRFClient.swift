@@ -28,7 +28,7 @@ public struct IGRFBuilderWithDate {
     let inputLocation: IGRFLocation
     let degreesLocation: DegreesLocation
     let components: GeocentricCoordinateComponents
-    let date: Double
+    let decimalYear: Double
 
     init(
         igrfGen: IGRFGen,
@@ -36,14 +36,14 @@ public struct IGRFBuilderWithDate {
         inputLocation: IGRFLocation,
         degreesLocation: DegreesLocation,
         components: GeocentricCoordinateComponents,
-        date: Double
+        decimalYear: Double
     ) {
         self.igrfGen = igrfGen
         self.coordinateSystem = coordinateSystem
         self.inputLocation = inputLocation
         self.degreesLocation = degreesLocation
         self.components = components
-        self.date = date
+        self.decimalYear = decimalYear
     }
 
     public func synthesize() throws -> IGRFDisplayResult {
@@ -53,7 +53,7 @@ public struct IGRFBuilderWithDate {
         }
 
         let input = GeomagneticInput(
-            date: date,
+            date: decimalYear,
             alt: components.radius,
             lat: degreesLocation.latitude,
             colat: components.geocentricColat,

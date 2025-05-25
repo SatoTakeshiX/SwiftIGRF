@@ -34,7 +34,7 @@ public struct IGRFBuilderWithGeocentricComponents {
             inputLocation: inputLocation,
             degreesLocation: degreesLocation,
             components: components,
-            date: dateDouble
+            decimalYear: dateDouble
         )
     }
 
@@ -49,7 +49,7 @@ public struct IGRFBuilderWithGeocentricComponents {
             inputLocation: inputLocation,
             degreesLocation: degreesLocation,
             components: components,
-            date: decimalYear
+            decimalYear: decimalYear
         )
     }
 }
