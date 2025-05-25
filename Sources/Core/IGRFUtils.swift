@@ -551,7 +551,7 @@ public struct IGRFUtils {
      * - Returns: 地磁気要素の永年変化
      */
     public static func xyz2dhifSV(
-        field: CartesianMagneticComponents, 
+        field: CartesianMagneticComponents,
         sv: CartesianMagneticComponents
     ) -> GeomagneticComponents {
         let h2 = field.x * field.x + field.y * field.y

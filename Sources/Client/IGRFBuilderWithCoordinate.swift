@@ -21,8 +21,7 @@ public struct IGRFBuilderWithCoordinate {
     /// - Returns: IGRFBuilderWithLocation instance with the specified location parameters
 
     public func set(
-        inputLocation: IGRFLocation,
-        altitude: Double
+        inputLocation: IGRFLocation
     )
         -> IGRFBuilderWithLocation
     {
@@ -47,8 +46,7 @@ public struct IGRFBuilderWithCoordinate {
                 igrfGen: igrfGen,
                 coordinateSystem: coordinateSystem,
                 inputLocation: inputLocation,
-                degreesLocation: degreesLocation,
-                altitude: altitude
+                degreesLocation: degreesLocation
             )
 
         case .decimalDegrees:
@@ -63,8 +61,7 @@ public struct IGRFBuilderWithCoordinate {
                 igrfGen: igrfGen,
                 coordinateSystem: coordinateSystem,
                 inputLocation: inputLocation,
-                degreesLocation: degreesLocation,
-                altitude: altitude
+                degreesLocation: degreesLocation
             )
         }
     }
