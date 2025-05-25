@@ -24,7 +24,6 @@ public struct IGRFBuilderWithGeocentricComponents {
 
     public func set(date: Date) throws -> IGRFBuilderWithDate {
         let dateDouble = date.decimalYear()
-
         guard (1900...2035).contains(dateDouble) else {
             throw IGRFError.invalidDate(
                 message: "Invalid date. Please enter a date between 1900 and 2035.")
