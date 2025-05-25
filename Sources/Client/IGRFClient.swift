@@ -96,7 +96,7 @@ public struct IGRFBuilderWithCoordinate {
     func splitUsingModf(_ degreeMinuts: Double) -> (degrees: Double, minutes: Double) {
         var intPart: Double = 0
         let fracPart = modf(degreeMinuts, &intPart)
-        let minutesRounded = fracPart.rounded(toPlaces: 5) * 100
+        let minutesRounded = fracPart.rounded(toPlaces: 6) * 100
         return (degrees: intPart, minutes: minutesRounded)
     }
 }
