@@ -48,12 +48,23 @@ let package = Package(
             path: "Sources/CLI"
         ),
         .testTarget(
-            name: "IGRFCLITests",
-            dependencies: ["IGRFCLI", "IGRFCore", "IGRFClient"],
-            path: "Tests/IGRFCLITests",
+            name: "IGRFCoreTests",
+            dependencies: ["IGRFCore"],
+            path: "Tests/IGRFCoreTests",
             resources: [
                 .process("TestData")
             ]
+        ),
+        .testTarget(
+            name: "IGRFClientTests",
+            dependencies: ["IGRFClient", "IGRFCore"],
+            path: "Tests/IGRFClientTests"
+        ),
+        .testTarget(
+            name: "IGRFCLITests",
+            dependencies: ["IGRFCLI", "IGRFCore"],
+            path: "Tests/IGRFCLITests"
+
         ),
     ]
 )
