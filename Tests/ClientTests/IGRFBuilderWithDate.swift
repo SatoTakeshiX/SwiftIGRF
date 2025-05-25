@@ -74,4 +74,39 @@ final class IGRFBuilderWithDateTests: XCTestCase {
         XCTAssertEqual(String(format: "%.1f", result.result.cartesianCompsSV.y), "-21.9")
         XCTAssertEqual(String(format: "%.1f", result.result.cartesianCompsSV.z), "33.8")
     }
+
+    func test_setDate_succeeds_whenDateIsInRange_withDate() throws {
+        let builder = try IGRFClient.create(igrfGen: .igrf14)
+            .set(system: .geodetic)
+            .set(
+                inputLocation: .decimalDegrees(
+                    latitude: 35.6812, longitude: 139.7671248)
+            )
+            .set(alt: 0)
+            .set(date: Date(timeIntervalSince1970: 1_577_836_800))  // January 1, 2020
+
+        let result = try builder.synthesize()
+        XCTAssertEqual(String(format: "%.4f", result.lat), "35.6812")
+        XCTAssertEqual(String(format: "%.4f", result.input.lon), "139.7671")
+        XCTAssertEqual(String(format: "%.1f", result.alt), "0.0")
+        XCTAssertEqual(String(format: "%.2f", result.input.date), "2020.00")
+        XCTAssertEqual(result.igrfGeneration, 14)
+        XCTAssertEqual(String(format: "%.3f", result.result.geoComponents.declination), "-7.610")
+        XCTAssertEqual(String(format: "%.3f", result.result.geoComponents.inclination), "49.499")
+        XCTAssertEqual(
+            String(format: "%.1f", result.result.geoComponents.horizontalIntensity), "30315.1")
+        XCTAssertEqual(
+            String(format: "%.1f", result.result.geoComponents.effectiveField), "46677.2")
+        XCTAssertEqual(String(format: "%.1f", result.result.cartesianComps.x), "30048.1")
+        XCTAssertEqual(String(format: "%.1f", result.result.cartesianComps.y), "-4014.4")
+        XCTAssertEqual(String(format: "%.1f", result.result.cartesianComps.z), "35493.1")
+        XCTAssertEqual(String(format: "%.2f", result.result.geoComponentsSV.declination), "-2.91")
+        XCTAssertEqual(String(format: "%.2f", result.result.geoComponentsSV.inclination), "0.04")
+        XCTAssertEqual(
+            String(format: "%.1f", result.result.geoComponentsSV.horizontalIntensity), "16.4")
+        XCTAssertEqual(String(format: "%.1f", result.result.geoComponentsSV.effectiveField), "25.8")
+        XCTAssertEqual(String(format: "%.1f", result.result.cartesianCompsSV.x), "12.8")
+        XCTAssertEqual(String(format: "%.1f", result.result.cartesianCompsSV.y), "-27.6")
+        XCTAssertEqual(String(format: "%.1f", result.result.cartesianCompsSV.z), "19.9")
+    }
 }
