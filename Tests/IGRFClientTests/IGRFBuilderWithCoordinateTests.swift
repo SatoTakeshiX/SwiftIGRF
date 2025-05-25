@@ -11,8 +11,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
         XCTAssertEqual(igrfBuilderWithCoordinate.coordinateSystem, .geodetic)
         let igrfBuilderWithLocation = igrfBuilderWithCoordinate.set(
             inputLocation: IGRFLocation(
-                latitude: 35.30, longitude: 139.30, format: .degreesAndMinutes),
-            altitude: 0.0
+                latitude: 35.30, longitude: 139.30, format: .degreesAndMinutes)
         )
 
         XCTAssertEqual(igrfBuilderWithLocation.igrfGen, .igrf14)
@@ -23,13 +22,11 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
         XCTAssertEqual(
             igrfBuilderWithLocation.degreesLocation,
             DegreesLocation(latitude: 35.5, longitude: 139.5))
-        XCTAssertEqual(igrfBuilderWithLocation.altitude, 0.0)
 
         // 分が0のケース
         let igrfBuilderWithLocation0 = igrfBuilderWithCoordinate.set(
             inputLocation: IGRFLocation(
-                latitude: 35.00, longitude: 139.00, format: .degreesAndMinutes),
-            altitude: 0.0
+                latitude: 35.00, longitude: 139.00, format: .degreesAndMinutes)
         )
 
         XCTAssertEqual(
@@ -40,8 +37,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
         // 分が15のケース
         let igrfBuilderWithLocation15 = igrfBuilderWithCoordinate.set(
             inputLocation: IGRFLocation(
-                latitude: 35.15, longitude: 139.15, format: .degreesAndMinutes),
-            altitude: 0.0
+                latitude: 35.15, longitude: 139.15, format: .degreesAndMinutes)
         )
 
         XCTAssertEqual(
@@ -52,8 +48,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
         // 分が45のケース
         let igrfBuilderWithLocation45 = igrfBuilderWithCoordinate.set(
             inputLocation: IGRFLocation(
-                latitude: 35.45, longitude: 139.45, format: .degreesAndMinutes),
-            altitude: 0.0
+                latitude: 35.45, longitude: 139.45, format: .degreesAndMinutes)
         )
 
         XCTAssertEqual(
@@ -64,8 +59,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
         // 分が60のケース
         let igrfBuilderWithLocation60 = igrfBuilderWithCoordinate.set(
             inputLocation: IGRFLocation(
-                latitude: 35.60, longitude: 139.60, format: .degreesAndMinutes),
-            altitude: 0.0
+                latitude: 35.60, longitude: 139.60, format: .degreesAndMinutes)
         )
 
         XCTAssertEqual(
