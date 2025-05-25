@@ -10,7 +10,7 @@ public struct IGRFClient {
 public struct IGRFBuilder {
     let igrfGen: IGRFGen
 
-    init(igrfGen: IGRFGen) {
+    public init(igrfGen: IGRFGen) {
         self.igrfGen = igrfGen
     }
 
@@ -28,7 +28,7 @@ public struct IGRFBuilderWithLocation {
     let inputLocation: IGRFLocation
     let degreesLocation: DegreesLocation
 
-    init(
+    public init(
         igrfGen: IGRFGen,
         coordinateSystem: CoordinateSystemType,
         inputLocation: IGRFLocation,
@@ -89,7 +89,7 @@ public struct IGRFBuilderWithGeocentricComponents {
     let degreesLocation: DegreesLocation
     let components: GeocentricCoordinateComponents
 
-    init(
+    public init(
         igrfGen: IGRFGen,
         coordinateSystem: CoordinateSystemType,
         inputLocation: IGRFLocation,
@@ -107,21 +107,24 @@ public struct IGRFBuilderWithGeocentricComponents {
 public struct IGRFBuilderWithDate {
     let igrfGen: IGRFGen
     let coordinateSystem: CoordinateSystemType
-    let location: IGRFLocation
-    let altitude: Double
-    let date: Date
+    let inputLocation: IGRFLocation
+    let degreesLocation: DegreesLocation
+    let components: GeocentricCoordinateComponents
+    let date: Double
 
     init(
         igrfGen: IGRFGen,
         coordinateSystem: CoordinateSystemType,
-        location: IGRFLocation,
-        altitude: Double,
-        date: Date
+        inputLocation: IGRFLocation,
+        degreesLocation: DegreesLocation,
+        components: GeocentricCoordinateComponents,
+        date: Double
     ) {
         self.igrfGen = igrfGen
         self.coordinateSystem = coordinateSystem
-        self.location = location
-        self.altitude = altitude
+        self.inputLocation = inputLocation
+        self.degreesLocation = degreesLocation
+        self.components = components
         self.date = date
     }
 
