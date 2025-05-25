@@ -64,7 +64,31 @@ public struct IGRFScreen: View {
     }
 
     private func calculateMagneticField() {
-        result = "some"
+        let (latDegrees, latMinutes) = splitCoordinate(latitude)
+        let (lonDegrees, lonMinutes) = splitCoordinate(longitude)
+
+        result = """
+            Input:
+            Latitude: \(latDegrees)° \(String(format: "%.4f", latMinutes))'
+            Longitude: \(lonDegrees)° \(String(format: "%.4f", lonMinutes))'
+            Altitude: \(String(format: "%.1f", altitude)) km
+            Date: \(date.formatted(date: .long, time: .omitted))
+            """
+    }
+
+    private func splitCoordinate(_ value: Double) -> (degrees: Int, minutes: Double) {
+        // 小数点以下4桁までに制限
+        let formattedValue = String(format: "%.4f", value)
+        let components = formattedValue.split(separator: ".")
+
+        guard components.count == 2 else {
+            return (Int(value), 0.0)
+        }
+
+        let degrees = Int(components[0]) ?? 0
+        let minutes = Double("0.\(components[1])") ?? 0.0
+
+        return (degrees, minutes)
     }
 
     public init() {}
@@ -76,7 +100,7 @@ extension IGRFScreen {
         if !result.isEmpty {
             List {
                 Section(header: Text("Input")) {
-                    Text("kkk")
+                    Text(result)
                 }
                 Section(header: Text("Output")) {
                     Text("Declination (D): 0.000°")

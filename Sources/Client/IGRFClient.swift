@@ -2,7 +2,7 @@ import Foundation
 import IGRFCore
 
 public struct IGRFClient {
-    public static func create(igrfGen: IGRFGen) throws -> IGRFBuilder {
+    public static func create(igrfGen: IGRFGen) -> IGRFBuilder {
         return IGRFBuilder(igrfGen: igrfGen)
     }
 }
@@ -49,10 +49,12 @@ public struct IGRFBuilderWithCoordinate {
     {
         switch inputLocation.format {
         case .degreesAndMinutes:
-            let latd = floor(inputLocation.latitude)
-            let latm = inputLocation.latitude - latd
-            let lond = floor(inputLocation.longitude)
-            let lonm = inputLocation.longitude - lond
+            let (latd, latm) = splitUsingModf(inputLocation.latitude)
+            print("inputLocation.latitude: \(inputLocation.latitude)")
+            print("latd: \(latd), latm: \(latm)")
+            let (lond, lonm) = splitUsingModf(inputLocation.longitude)
+
+            print("latd: \(latd), latm: \(latm), lond: \(lond), lonm: \(lonm)")
 
             let (lat, lon) = IGRFUtils.checkLatLonBounds(
                 latd: latd,
@@ -60,6 +62,7 @@ public struct IGRFBuilderWithCoordinate {
                 lond: lond,
                 lonm: lonm
             )
+            print("lat: \(lat), lon: \(lon)")
             let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
             return IGRFBuilderWithLocation(
                 igrfGen: igrfGen,
@@ -85,6 +88,26 @@ public struct IGRFBuilderWithCoordinate {
                 altitude: altitude
             )
         }
+    }
+
+    /// Splits a value into degrees and minutes
+    /// - Parameter value: The Double value to split
+    /// - Returns: (degrees, minutes)
+    func splitUsingModf(_ degreeMinuts: Double) -> (degrees: Double, minutes: Double) {
+        var intPart: Double = 0
+        let fracPart = modf(degreeMinuts, &intPart)
+        let minutesRounded = fracPart.rounded(toPlaces: 5) * 100
+        return (degrees: intPart, minutes: minutesRounded)
+    }
+}
+
+extension Double {
+    /// 小数点以下を指定桁まで丸める
+    /// - Parameter places: 小数点以下の桁数
+    /// - Returns: 丸めた結果
+    func rounded(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
     }
 }
 

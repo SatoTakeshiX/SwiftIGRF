@@ -1,7 +1,7 @@
 import IGRFCore
 
 /// Represents a location with a specified degree format
-public struct IGRFLocation {
+public struct IGRFLocation: Equatable {
     public let latitude: Double
     public let longitude: Double
     public let format: DegreeFormat
