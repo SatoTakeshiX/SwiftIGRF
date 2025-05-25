@@ -22,9 +22,16 @@ public struct IGRFDisplayResult {
         self.result = result
         self.igrfGeneration = igrfGeneration
 
-        let (convertedAlt, convertedLat) = IGRFUtils.geoToGg(
-            radius: input.alt, theta: input.colat)
-        self.alt = convertedAlt
-        self.lat = convertedLat
+        switch input.coordinateSystem {
+        case .geodetic:
+            let (convertedAlt, convertedLat) = IGRFUtils.geoToGg(
+                radius: input.alt, theta: input.colat)
+            self.alt = convertedAlt
+            self.lat = 90 - convertedLat
+
+        case .geocentric:
+            self.alt = input.alt
+            self.lat = input.lat
+        }
     }
 }

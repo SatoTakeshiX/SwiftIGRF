@@ -8,8 +8,8 @@ final class IGRFBuilderWithGeocentricComponentsTests: XCTestCase {
         let builder = try IGRFClient.create(igrfGen: .igrf14)
             .set(system: .geodetic)
             .set(
-                inputLocation: IGRFLocation(
-                    latitude: 39.9, longitude: 139.7, format: .decimalDegrees)
+                inputLocation:
+                    .decimalDegrees(latitude: 39.9, longitude: 139.7)
             )
             .set(alt: 0)
 
@@ -22,8 +22,7 @@ final class IGRFBuilderWithGeocentricComponentsTests: XCTestCase {
         let builder = try IGRFClient.create(igrfGen: .igrf14)
             .set(system: .geodetic)
             .set(
-                inputLocation: IGRFLocation(
-                    latitude: 39.9, longitude: 139.7, format: .decimalDegrees)
+                inputLocation: .decimalDegrees(latitude: 39.9, longitude: 139.7)
             )
             .set(alt: 0)
 
@@ -40,8 +39,7 @@ final class IGRFBuilderWithGeocentricComponentsTests: XCTestCase {
         let builder = try IGRFClient.create(igrfGen: .igrf14)
             .set(system: .geodetic)
             .set(
-                inputLocation: IGRFLocation(
-                    latitude: 39.9, longitude: 139.7, format: .decimalDegrees)
+                inputLocation: .decimalDegrees(latitude: 39.9, longitude: 139.7)
             )
             .set(alt: 0)
 
@@ -54,8 +52,7 @@ final class IGRFBuilderWithGeocentricComponentsTests: XCTestCase {
         let builder = try IGRFClient.create(igrfGen: .igrf14)
             .set(system: .geodetic)
             .set(
-                inputLocation: IGRFLocation(
-                    latitude: 39.9, longitude: 139.7, format: .decimalDegrees)
+                inputLocation: .decimalDegrees(latitude: 39.9, longitude: 139.7)
             )
             .set(alt: 0)
 

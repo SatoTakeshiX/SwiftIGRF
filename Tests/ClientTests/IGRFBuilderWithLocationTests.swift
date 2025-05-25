@@ -11,8 +11,8 @@ final class IGRFBuilderWithLocationTests: XCTestCase {
         let builder = try IGRFClient.create(igrfGen: .igrf14)
             .set(system: .geocentric)
             .set(
-                inputLocation: IGRFLocation(
-                    latitude: 1, longitude: 1, format: .degreesAndMinutes)
+                inputLocation: .degreesAndMinutes(
+                    latDegrees: 1, latMinutes: 0, lonDegrees: 1, lonMinutes: 0)
             )
             .set(alt: existedAlt)
 
@@ -23,8 +23,8 @@ final class IGRFBuilderWithLocationTests: XCTestCase {
             try IGRFClient.create(igrfGen: .igrf14)
                 .set(system: .geocentric)
                 .set(
-                    inputLocation: IGRFLocation(
-                        latitude: 1, longitude: 1, format: .degreesAndMinutes)
+                    inputLocation: .degreesAndMinutes(
+                        latDegrees: 1, latMinutes: 0, lonDegrees: 1, lonMinutes: 0)
                 )
                 .set(alt: invalidAlt)
         ) { error in

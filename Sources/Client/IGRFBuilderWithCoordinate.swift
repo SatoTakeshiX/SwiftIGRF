@@ -25,16 +25,14 @@ public struct IGRFBuilderWithCoordinate {
     )
         -> IGRFBuilderWithLocation
     {
-        switch inputLocation.format {
-        case .degreesAndMinutes:
-            let (latd, latm) = splitUsingModf(inputLocation.latitude)
-            let (lond, lonm) = splitUsingModf(inputLocation.longitude)
+        switch inputLocation {
+        case .degreesAndMinutes(let latDegrees, let latMinutes, let lonDegrees, let lonMinutes):
 
             let (lat, lon) = IGRFUtils.checkLatLonBounds(
-                latd: latd,
-                latm: latm,
-                lond: lond,
-                lonm: lonm
+                latd: latDegrees,
+                latm: latMinutes,
+                lond: lonDegrees,
+                lonm: lonMinutes
             )
             let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
             return IGRFBuilderWithLocation(
@@ -44,11 +42,11 @@ public struct IGRFBuilderWithCoordinate {
                 degreesLocation: degreesLocation
             )
 
-        case .decimalDegrees:
+        case .decimalDegrees(let latitude, let longitude):
             let (lat, lon) = IGRFUtils.checkLatLonBounds(
-                latd: inputLocation.latitude,
+                latd: latitude,
                 latm: 0,
-                lond: inputLocation.longitude,
+                lond: longitude,
                 lonm: 0
             )
             let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
@@ -59,15 +57,5 @@ public struct IGRFBuilderWithCoordinate {
                 degreesLocation: degreesLocation
             )
         }
-    }
-
-    /// Splits a value into degrees and minutes
-    /// - Parameter value: The Double value to split
-    /// - Returns: (degrees, minutes)
-    func splitUsingModf(_ degreeMinuts: Double) -> (degrees: Double, minutes: Double) {
-        var intPart: Double = 0
-        let fracPart = modf(degreeMinuts, &intPart)
-        let minutesRounded = fracPart.rounded(toPlaces: 6) * 100
-        return (degrees: intPart, minutes: minutesRounded)
     }
 }
