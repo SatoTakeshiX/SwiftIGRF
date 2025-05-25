@@ -38,4 +38,19 @@ public struct IGRFBuilderWithGeocentricComponents {
             date: dateDouble
         )
     }
+
+    public func set(decimalYear: Double) throws -> IGRFBuilderWithDate {
+        guard (1900...2035).contains(decimalYear) else {
+            throw IGRFError.invalidDate(
+                message: "Invalid date. Please enter a date between 1900 and 2035.")
+        }
+        return IGRFBuilderWithDate(
+            igrfGen: igrfGen,
+            coordinateSystem: coordinateSystem,
+            inputLocation: inputLocation,
+            degreesLocation: degreesLocation,
+            components: components,
+            date: decimalYear
+        )
+    }
 }
