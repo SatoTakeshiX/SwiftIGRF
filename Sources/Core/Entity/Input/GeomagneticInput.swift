@@ -30,11 +30,25 @@ public struct GeomagneticInput: InputResultProtocol {
         self.cd = cd
     }
 
-    func makeDate(withDecimalYear decimalYear: Double) -> Date {
+    var date: Date? {
         let calendar = Calendar(identifier: .gregorian)
         let year = Int(decimalYear)
-        let month = 1
-        let day = 1
-        return calendar.date(from: DateComponents(year: year, month: month, day: day))!
+        let fraction = decimalYear - Double(year)
+        print("fraction: \(fraction)")
+        guard let startOfYear = calendar.date(from: DateComponents(year: year, month: 1, day: 1)),
+            let startOfNextYear = calendar.date(
+                from: DateComponents(year: year + 1, month: 1, day: 1))
+        else {
+            return nil
+        }
+
+        print("startOfYear: \(startOfYear)")
+        print("startOfNextYear: \(startOfNextYear)")
+
+        let yearLength = startOfNextYear.timeIntervalSince(startOfYear)
+        let elapsedSeconds = yearLength * fraction
+        print("elapsedSeconds: \(elapsedSeconds)")
+        print("yearLength: \(yearLength)")
+        return startOfYear.addingTimeInterval(elapsedSeconds)
     }
 }
