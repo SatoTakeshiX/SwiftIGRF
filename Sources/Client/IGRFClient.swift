@@ -53,7 +53,7 @@ public struct IGRFBuilderWithDate {
         }
 
         let input = GeomagneticInput(
-            date: decimalYear,
+            decimalYear: decimalYear,
             alt: components.radius,
             lat: degreesLocation.latitude,
             colat: components.geocentricColat,

@@ -1,5 +1,7 @@
+import Foundation
+
 public struct GeomagneticInput: InputResultProtocol {
-    public let date: Double
+    public let decimalYear: Double
     public let alt: Double
     public let lat: Double
     public let colat: Double
@@ -9,7 +11,7 @@ public struct GeomagneticInput: InputResultProtocol {
     public let cd: Double
 
     public init(
-        date: Double,
+        decimalYear: Double,
         alt: Double,
         lat: Double,
         colat: Double,
@@ -18,7 +20,7 @@ public struct GeomagneticInput: InputResultProtocol {
         sd: Double,
         cd: Double
     ) {
-        self.date = date
+        self.decimalYear = decimalYear
         self.alt = alt
         self.lat = lat
         self.colat = colat
@@ -26,5 +28,13 @@ public struct GeomagneticInput: InputResultProtocol {
         self.coordinateSystem = coordinateSystem
         self.sd = sd
         self.cd = cd
+    }
+
+    func makeDate(withDecimalYear decimalYear: Double) -> Date {
+        let calendar = Calendar(identifier: .gregorian)
+        let year = Int(decimalYear)
+        let month = 1
+        let day = 1
+        return calendar.date(from: DateComponents(year: year, month: month, day: day))!
     }
 }

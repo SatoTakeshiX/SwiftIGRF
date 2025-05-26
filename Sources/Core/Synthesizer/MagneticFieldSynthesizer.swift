@@ -12,7 +12,7 @@ public struct MagneticFieldSynthesizer {
         let timeInterpolator = Interpolator(x: igrfData.time, y: igrfData.coeffs)
 
         // 目的の日付に係数を補間
-        let coeffs = timeInterpolator.interpolate(input.date)
+        let coeffs = timeInterpolator.interpolate(input.decimalYear)
 
         // 主磁場のB_r、B_theta、B_phiの値を計算
         let magneticField = IGRFUtils.synthValues(
@@ -25,7 +25,7 @@ public struct MagneticFieldSynthesizer {
 
         // 5年ごとの期間内での日付を特定し、その期間内でのSVを計算
         // IGRFは各5年期間内で一定のSVを持つ
-        let epoch = Int((input.date - 1900) / 5)
+        let epoch = Int((input.decimalYear - 1900) / 5)
         let epochStart = Double(epoch * 5)
 
         // SV係数を計算（nT/年単位）
