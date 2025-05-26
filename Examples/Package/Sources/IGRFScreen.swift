@@ -10,10 +10,8 @@ import IGRFCore
 import SwiftUI
 
 public struct IGRFScreen: View {
-    @State private var latitude: Double = 35.0
-    @State private var longitude: Double = 139.0
     @State private var altitude: Double = 0.0
-    @State private var date: Date = Date()
+    @State private var selectedDate: Date = Date()
     @State private var result: String = ""
     @State private var isInputSheetPresented = false
     @State private var selectedPreset: LocationPreset = .tokyo
@@ -23,7 +21,6 @@ public struct IGRFScreen: View {
         case hongKong = "Hong Kong"
         case newYork = "New York"
         case london = "London"
-        case custom = "Custom"
 
         var coordinates: (latitude: Double, longitude: Double) {
             switch self {
@@ -35,8 +32,6 @@ public struct IGRFScreen: View {
                 return (40.7128, -74.0060)
             case .london:
                 return (51.5074, -0.1278)
-            case .custom:
-                return (0, 0)
             }
         }
     }
@@ -64,31 +59,28 @@ public struct IGRFScreen: View {
     }
 
     private func calculateMagneticField() {
-        let (latDegrees, latMinutes) = splitCoordinate(latitude)
-        let (lonDegrees, lonMinutes) = splitCoordinate(longitude)
+        do {
+            let location = selectedPreset
+            let result2 = try IGRFClient.create(igrfGen: .igrf14)
+                .set(system: .geodetic)
+                .set(
+                    inputLocation: .decimalDegrees(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)
+                    )
+                .set(alt: 0)
+                .set(date: selectedDate)
+                .synthesize()
+        }
+        catch {
+            print(error.localizedDescription)
+        }
 
         result = """
             Input:
-            Latitude: \(latDegrees)° \(String(format: "%.4f", latMinutes))'
-            Longitude: \(lonDegrees)° \(String(format: "%.4f", lonMinutes))'
+            Latitude: ° \(String(format: "%.4f", 222))'
+            Longitude: ° \(String(format: "%.4f", 222))'
             Altitude: \(String(format: "%.1f", altitude)) km
-            Date: \(date.formatted(date: .long, time: .omitted))
+            Date: \(selectedDate.formatted(date: .long, time: .omitted))
             """
-    }
-
-    private func splitCoordinate(_ value: Double) -> (degrees: Int, minutes: Double) {
-        // 小数点以下4桁までに制限
-        let formattedValue = String(format: "%.4f", value)
-        let components = formattedValue.split(separator: ".")
-
-        guard components.count == 2 else {
-            return (Int(value), 0.0)
-        }
-
-        let degrees = Int(components[0]) ?? 0
-        let minutes = Double("0.\(components[1])") ?? 0.0
-
-        return (degrees, minutes)
     }
 
     public init() {}
@@ -140,26 +132,11 @@ extension IGRFScreen {
                         }
                     }
                     .onChange(of: selectedPreset) { newValue in
-                        if newValue != .custom {
-                            latitude = newValue.coordinates.latitude
-                            longitude = newValue.coordinates.longitude
-                        }
+                        selectedPreset = newValue
                     }
                 }
 
                 Section(header: Text("Coordinates")) {
-                    HStack {
-                        Text("Latitude")
-                        TextField("Latitude", value: $latitude, format: .number)
-                            .keyboardType(.decimalPad)
-                            .disabled(selectedPreset != .custom)
-                    }
-                    HStack {
-                        Text("Longitude")
-                        TextField("Longitude", value: $longitude, format: .number)
-                            .keyboardType(.decimalPad)
-                            .disabled(selectedPreset != .custom)
-                    }
                     HStack {
                         Text("Altitude(km)")
                         TextField("Altitude", value: $altitude, format: .number)
@@ -168,7 +145,7 @@ extension IGRFScreen {
                 }
 
                 Section(header: Text("Date")) {
-                    DatePicker("Date", selection: $date, displayedComponents: .date)
+                    DatePicker("Date", selection: $selectedDate, displayedComponents: .date)
                 }
             }
             .navigationTitle("Input Parameters")
