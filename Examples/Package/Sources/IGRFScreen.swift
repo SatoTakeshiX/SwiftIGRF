@@ -6,7 +6,6 @@
 //
 
 import IGRFClient
-import IGRFCore
 import SwiftUI
 
 enum LocationPreset: String, CaseIterable {
@@ -64,10 +63,10 @@ public struct IGRFScreen: View {
             result = try IGRFClient.create(igrfGen: .igrf14)
                 .set(system: .geodetic)
                 .set(
-                    inputLocation: .decimalDegrees(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)
+                    inputLocation: .decimalDegrees(latitude: 35.6762, longitude: 139.6503)
                     )
                 .set(alt: 0)
-                .set(date: selectedDate)
+                .set(date: Date())
                 .synthesize()
         }
         catch {
@@ -79,6 +78,19 @@ public struct IGRFScreen: View {
 }
 
 extension IGRFScreen {
+    var formattedDay: String {
+        guard let date = result?.input.date
+        else {
+            return ""
+        }
+        return date.formatted(
+            .dateTime
+                .year()
+                .month()
+                .day()
+        )
+    }
+
     @ViewBuilder
     fileprivate var content: some View {
         if let result {
@@ -87,7 +99,7 @@ extension IGRFScreen {
                     Text("Latitude: \(String(format: "%.4f", result.input.lat))°")
                     Text("longitude: \(String(format: "%.4f", result.input.lon))°")
                     Text("altitude: \(String(format: "%.1f", result.alt))")
-                    Text("date: \(String(format: "%.2f", result.input.date))")
+                    Text("date: \(formattedDay)")
                     Text("IGRF Gen: \(result.igrfGeneration)")
                 }
                 Section(header: Text("Output")) {

@@ -11,7 +11,6 @@ public struct IGRFDisplayResult {
 
     /// input data
     public let alt: Double
-    public let lat: Double
 
     public init(
         input: GeomagneticInput,
@@ -27,11 +26,9 @@ public struct IGRFDisplayResult {
             let (convertedAlt, convertedLat) = IGRFUtils.geoToGg(
                 radius: input.alt, theta: input.colat)
             self.alt = convertedAlt
-            self.lat = 90 - convertedLat
 
         case .geocentric:
             self.alt = input.alt
-            self.lat = input.lat
         }
     }
 }

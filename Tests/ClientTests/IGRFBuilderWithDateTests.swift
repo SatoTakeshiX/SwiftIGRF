@@ -15,7 +15,7 @@ final class IGRFBuilderWithDateTests: XCTestCase {
             .set(decimalYear: 2025.25)
 
         let result = try builder.synthesize()
-        XCTAssertEqual(String(format: "%.4f", result.lat), "35.6580")
+        XCTAssertEqual(String(format: "%.4f", result.input.lat), "35.6580")
         XCTAssertEqual(String(format: "%.4f", result.input.lon), "139.7016")
         XCTAssertEqual(String(format: "%.1f", result.alt), "0.0")
         XCTAssertEqual(String(format: "%.2f", result.input.decimalYear), "2025.25")
@@ -50,7 +50,7 @@ final class IGRFBuilderWithDateTests: XCTestCase {
             .set(decimalYear: 2025.0)
 
         let result = try builder.synthesize()
-        XCTAssertEqual(String(format: "%.4f", result.lat), "35.6812")
+        XCTAssertEqual(String(format: "%.4f", result.input.lat), "35.6812")
         XCTAssertEqual(String(format: "%.4f", result.input.lon), "139.7671")
         XCTAssertEqual(String(format: "%.1f", result.alt), "0.0")
         XCTAssertEqual(String(format: "%.2f", result.input.decimalYear), "2025.00")
@@ -85,7 +85,7 @@ final class IGRFBuilderWithDateTests: XCTestCase {
             .set(date: Date(timeIntervalSince1970: 1_577_836_800))  // January 1, 2020
 
         let result = try builder.synthesize()
-        XCTAssertEqual(String(format: "%.4f", result.lat), "35.6812")
+        XCTAssertEqual(String(format: "%.4f", result.input.lat), "35.6812")
         XCTAssertEqual(String(format: "%.4f", result.input.lon), "139.7671")
         XCTAssertEqual(String(format: "%.1f", result.alt), "0.0")
         XCTAssertEqual(String(format: "%.2f", result.input.decimalYear), "2020.00")

@@ -159,16 +159,57 @@ To use this package in your Swift project, add it as a dependency in your `Packa
 ```swift
 // Package.swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/SwiftIGRF.git", from: "0.0.2")
+    .package(url: "https://github.com/yourusername/SwiftIGRF.git", from: "0.0.3")
 ],
 targets: [
     .target(
         name: "YourApp",
-        dependencies: ["IGRFCore"]
+        dependencies: [
+                .product(name: "IGRFClient", package: "SwiftIGRF"),
+                .product(name: "IGRFCore", package: "SwiftIGRF"),
+        ],
     )
 ]
 ```
+For more details, please check the Examples folder.
 
+
+#### Example
+Here's an example of calculating the magnetic field for Tokyo's coordinates:
+
+
+```swift
+import IGRFClient
+
+let result = try IGRFClient.create(igrfGen: .igrf14)
+        .set(system: .geodetic)
+        .set(
+            inputLocation: .decimalDegrees(latitude: 35.6762, longitude: 139.6503)
+            )
+        .set(alt: 0)
+        .set(date: Date())
+        .synthesize()
+```
+
+You can get the calculation results as follows:
+
+
+```swift
+Text("Declination (D): \(String(format: " %.3f", result.result.geoComponents.declination))°")
+Text("Inclination (I): \(String(format: " %.3f", result.result.geoComponents.inclination))°")
+Text("Horizontal intensity (H): \(String(format: " %.1f", result.result.geoComponents.horizontalIntensity)) nT")
+Text("Total intensity (F): \(String(format: " %.1f", result.result.geoComponents.effectiveField)) nT")
+Text("North component (X): \(String(format: " %.1f", result.result.cartesianComps.x)) nT")
+Text("East component (Y): \(String(format: " %.1f", result.result.cartesianComps.y)) nT")
+Text("Vertical component (Z): \(String(format: " %.1f", result.result.cartesianComps.z)) nT")
+Text("Declination SV (D): \(String(format: " %.2f", result.result.geoComponentsSV.declination)) arcmin/yr")
+Text("Inclination SV (I): \(String(format: " %.2f", result.result.geoComponentsSV.inclination)) arcmin/yr")
+Text("Horizontal SV (H): \(String(format: " %.1f", result.result.geoComponentsSV.horizontalIntensity)) nT/yr")
+Text("Total SV (F): \(String(format: " %.1f", result.result.geoComponentsSV.effectiveField)) nT/yr")
+Text("North SV (X): \(String(format: " %.1f", result.result.cartesianCompsSV.x)) nT/yr")
+Text("East SV (Y): \(String(format: " %.1f", result.result.cartesianCompsSV.y)) nT/yr")
+Text("Vertical SV (Z): \(String(format: " %.1f", result.result.cartesianCompsSV.z)) nT/yr")
+```
 
 
 ## Important Notes
@@ -182,7 +223,7 @@ Currently, the `MagneticFieldSynthesizer` is available for use, but the followin
 - Implement `SpatialMagneticFieldSynthesizer`
 - Enhance documentation
 - Add more tests
-- Expand iOS sample application
+-[x] Expand iOS sample application
 
 
 ## License
