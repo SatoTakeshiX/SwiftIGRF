@@ -95,7 +95,7 @@ final class IOOptionsTests: XCTestCase {
 
         // テスト用の入力データを作成
         let input = GeomagneticInput(
-            date: 2025.25,
+            decimalYear: 2025.25,
             alt: 6370.910156840483,
             lat: 35.658,
             colat: 54.52408663919481,

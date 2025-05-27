@@ -1,0 +1,61 @@
+import Foundation
+import IGRFCore
+
+public struct IGRFBuilderWithCoordinate {
+    let igrfGen: IGRFGen
+    let coordinateSystem: CoordinateSystemType
+
+    public init(
+        igrfGen: IGRFGen,
+        system: CoordinateSystemType
+    ) {
+        self.igrfGen = igrfGen
+        self.coordinateSystem = system
+    }
+
+    /// Sets the location parameters for IGRF calculation
+    /// - Parameters:
+    ///   - latitude: Latitude value whose representation varies based on DegreeFormat
+    ///   - longitude: Longitude value whose representation varies based on DegreeFormat
+    ///   - altitude: Altitude in kilometers
+    /// - Returns: IGRFBuilderWithLocation instance with the specified location parameters
+
+    public func set(
+        inputLocation: IGRFLocation
+    )
+        -> IGRFBuilderWithLocation
+    {
+        switch inputLocation {
+        case .degreesAndMinutes(let latDegrees, let latMinutes, let lonDegrees, let lonMinutes):
+
+            let (lat, lon) = IGRFUtils.checkLatLonBounds(
+                latd: latDegrees,
+                latm: latMinutes,
+                lond: lonDegrees,
+                lonm: lonMinutes
+            )
+            let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
+            return IGRFBuilderWithLocation(
+                igrfGen: igrfGen,
+                coordinateSystem: coordinateSystem,
+                inputLocation: inputLocation,
+                degreesLocation: degreesLocation
+            )
+
+        case .decimalDegrees(let latitude, let longitude):
+            let (lat, lon) = IGRFUtils.checkLatLonBounds(
+                latd: latitude,
+                latm: 0,
+                lond: longitude,
+                lonm: 0
+            )
+            let degreesLocation = DegreesLocation(latitude: lat, longitude: lon)
+            return IGRFBuilderWithLocation(
+                igrfGen: igrfGen,
+                coordinateSystem: coordinateSystem,
+                inputLocation: inputLocation,
+                degreesLocation: degreesLocation
+            )
+        }
+    }
+}

@@ -6,11 +6,6 @@ protocol UserInputProtocol {
     func input() -> InputType
 }
 
-public enum DegreeFormat: Int {
-    case degreesAndMinutes = 1
-    case decimalDegrees = 2
-}
-
 struct SinglePointTime: UserInputProtocol {
     typealias InputType = GeomagneticInput
 
@@ -30,10 +25,10 @@ struct SinglePointTime: UserInputProtocol {
         let (alt, newColat, sd, cd) = readAltitude(coordinateSystem: coordinateSystem, colat: colat)
 
         // 日付の取得
-        let date = readDate()
+        let decimalYear = readDate()
 
         return GeomagneticInput(
-            date: date,
+            decimalYear: decimalYear,
             alt: alt,
             lat: lat,
             colat: newColat,
@@ -66,7 +61,7 @@ struct SinglePointTime: UserInputProtocol {
         }
 
         let contents = """
-            Geomagnetic field values at: \(String(format: "%.4f", printedLat))° / \(String(format: "%.4f", input.lon))°, at altitude \(String(format: "%.1f", printedAlt)) for \(input.date) using IGRF-\(igrfGen)
+            Geomagnetic field values at: \(String(format: "%.4f", printedLat))° / \(String(format: "%.4f", input.lon))°, at altitude \(String(format: "%.1f", printedAlt)) for \(input.decimalYear) using IGRF-\(igrfGen)
             Declination (D): \(String(format: " %.3f", result.geoComponents.declination))°
             Inclination (I): \(String(format: " %.3f", result.geoComponents.inclination))°
             Horizontal intensity (H): \(String(format: " %.1f", result.geoComponents.horizontalIntensity)) nT
@@ -260,10 +255,10 @@ struct SinglePointTime: UserInputProtocol {
             print("Enter decimal date in years 1900-2030:")
             print("->", terminator: "")
             if let input = readLine(),
-                let date = Double(input.trimmingCharacters(in: .whitespacesAndNewlines)),
-                dateVaridation(with: date)
+                let decimalYear = Double(input.trimmingCharacters(in: .whitespacesAndNewlines)),
+                dateVaridation(with: decimalYear)
             {
-                return date
+                return decimalYear
             } else {
                 continue
             }

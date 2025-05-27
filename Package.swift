@@ -16,6 +16,10 @@ let package = Package(
             name: "IGRFCore",
             targets: ["IGRFCore"]
         ),
+        .library(
+            name: "IGRFClient",
+            targets: ["IGRFClient"]
+        ),
         .executable(
             name: "igrf",
             targets: ["IGRFCLI"]
@@ -33,18 +37,34 @@ let package = Package(
                 .process("Resources/SHC_files")
             ]
         ),
+        .target(
+            name: "IGRFClient",
+            dependencies: ["IGRFCore"],
+            path: "Sources/Client"
+        ),
         .executableTarget(
             name: "IGRFCLI",
             dependencies: ["IGRFCore"],
             path: "Sources/CLI"
         ),
         .testTarget(
-            name: "IGRFCLITests",
-            dependencies: ["IGRFCLI", "IGRFCore"],
-            path: "Tests/IGRFCLITests",
+            name: "IGRFCoreTests",
+            dependencies: ["IGRFCore"],
+            path: "Tests/CoreTests",
             resources: [
                 .process("TestData")
             ]
+        ),
+        .testTarget(
+            name: "IGRFClientTests",
+            dependencies: ["IGRFClient", "IGRFCore"],
+            path: "Tests/ClientTests"
+        ),
+        .testTarget(
+            name: "IGRFCLITests",
+            dependencies: ["IGRFCLI", "IGRFCore"],
+            path: "Tests/CLITests"
+
         ),
     ]
 )
