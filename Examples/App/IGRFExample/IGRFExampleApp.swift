@@ -1,12 +1,5 @@
-//
-//  IGRFExampleApp.swift
-//  IGRFExample
-//
-//  Created by satoutakeshi on 2025/05/24.
-//
-
-import SwiftUI
 import IGRFApp
+import SwiftUI
 
 @main
 struct IGRFExampleApp: App {
