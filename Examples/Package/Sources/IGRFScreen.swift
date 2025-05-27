@@ -63,10 +63,13 @@ public struct IGRFScreen: View {
             result = try IGRFClient.create(igrfGen: .igrf14)
                 .set(system: .geodetic)
                 .set(
-                    inputLocation: .decimalDegrees(latitude: 35.6762, longitude: 139.6503)
+                    inputLocation: .decimalDegrees(
+                        latitude: location.coordinates.latitude,
+                        longitude: location.coordinates.longitude
                     )
+                )
                 .set(alt: 0)
-                .set(date: Date())
+                .set(date: selectedDate)
                 .synthesize()
         }
         catch {
