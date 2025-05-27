@@ -68,7 +68,7 @@ public struct IGRFScreen: View {
                         longitude: location.coordinates.longitude
                     )
                 )
-                .set(alt: 0)
+                .set(alt: altitude)
                 .set(date: selectedDate)
                 .synthesize()
         }
