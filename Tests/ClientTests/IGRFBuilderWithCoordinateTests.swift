@@ -23,7 +23,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
             igrfBuilderWithLocation.degreesLocation,
             DegreesLocation(latitude: 35.5, longitude: 139.5))
 
-        // 分が0のケース
+        // Case with 0 minutes
         let igrfBuilderWithLocation0 = igrfBuilderWithCoordinate.set(
             inputLocation: .degreesAndMinutes(
                 latDegrees: 35, latMinutes: 0, lonDegrees: 139, lonMinutes: 0)
@@ -34,7 +34,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
             DegreesLocation(latitude: 35.0, longitude: 139.0)
         )
 
-        // 分が15のケース
+        // Case with 15 minutes
         let igrfBuilderWithLocation15 = igrfBuilderWithCoordinate.set(
             inputLocation: .degreesAndMinutes(
                 latDegrees: 35, latMinutes: 15, lonDegrees: 139, lonMinutes: 15)
@@ -45,7 +45,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
             DegreesLocation(latitude: 35.25, longitude: 139.25)
         )
 
-        // 分が45のケース
+        // Case with 45 minutes
         let igrfBuilderWithLocation45 = igrfBuilderWithCoordinate.set(
             inputLocation: .degreesAndMinutes(
                 latDegrees: 35, latMinutes: 45, lonDegrees: 139, lonMinutes: 45)
@@ -56,7 +56,7 @@ final class IGRFBuilderWithCoordinateTests: XCTestCase {
             DegreesLocation(latitude: 35.75, longitude: 139.75)
         )
 
-        // 分が60のケース
+        // Case with 60 minutes
         let igrfBuilderWithLocation60 = igrfBuilderWithCoordinate.set(
             inputLocation: .degreesAndMinutes(
                 latDegrees: 35, latMinutes: 60, lonDegrees: 139, lonMinutes: 60)

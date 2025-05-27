@@ -4,7 +4,7 @@ import XCTest
 
 final class GeomagneticInputTests: XCTestCase {
     func testDate() {
-        // 2025.25年のテストケース
+        // Test case for year 2025.25
         let input = GeomagneticInput(
             decimalYear: 2025.25,
             alt: 6370.910156840483,
@@ -16,7 +16,7 @@ final class GeomagneticInputTests: XCTestCase {
             cd: 0.9999949501260912
         )
 
-        // 2025年4月1日を期待値として設定
+        // Set expected date to April 2, 2025
         let calendar = Calendar(identifier: .gregorian)
         let expectedDate = calendar.date(from: DateComponents(year: 2025, month: 4, day: 2))
             .unsafelyUnwrapped
@@ -25,17 +25,17 @@ final class GeomagneticInputTests: XCTestCase {
         XCTAssertEqual(
             calendar.component(.year, from: inputDate),
             calendar.component(.year, from: expectedDate),
-            "年が一致しません"
+            "Year does not match"
         )
         XCTAssertEqual(
             calendar.component(.month, from: inputDate),
             calendar.component(.month, from: expectedDate),
-            "月が一致しません"
+            "Month does not match"
         )
         XCTAssertEqual(
             calendar.component(.day, from: inputDate),
             calendar.component(.day, from: expectedDate),
-            "日が一致しません"
+            "Day does not match"
         )
     }
 }
